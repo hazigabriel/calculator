@@ -1,6 +1,7 @@
 * {
 	margin: 0;
 	padding: 0;
+
 }
 body{
 	background: #606c88;  /* fallback for old browsers */
@@ -11,22 +12,23 @@ body{
 .wrapper {
  	width: 420px;
 	height: 40%;
-	margin: 5% auto;
+	margin: 3% auto;
 }
 .container {
 	border-radius: 15px;
 	background: #abbaab;  /* fallback for old browsers */
 	background: -webkit-linear-gradient(to left, #ffffff, #abbaab);  /* Chrome 10-25, Safari 5.1-6 */
 	background: linear-gradient(to left, #ffffff, #abbaab); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-	height:500px;
+	min-height:625px;
 	width:400px;
 	padding:10px;
 	display: flex;
     flex-wrap: wrap;
     color:white;
-    font-size: 2em;
+    font-size: 1.8em;
     text-align: center;
-    box-shadow: -5px 5px #888888;
+    box-shadow: -6px 6px #888888;
+    font-family: 'VT323', monospace;
 
  
 }
@@ -35,18 +37,55 @@ body{
 	text-align: center;
 	padding-top: 20px;
 
- 
 } 
-.calculator-display {
+/*.calculator-display {
 	width: 380px;
 	height: 80px;
 	margin: 5px auto;
 	background-color: #708c5f;
-	display: block;
-   -moz-box-shadow:    inset 0 0 10px #000000;
-   -webkit-box-shadow: inset 0 0 10px #000000;
-   box-shadow:         inset 0 0 10px #000000;
+    -moz-box-shadow:    inset 0 0 10px #000000;
+    -webkit-box-shadow: inset 0 0 10px #000000;
+ 	box-shadow:         inset 0 0 10px #000000;
+ 	word-wrap: break-word;
 
+
+}*/
+.calculator-display {
+	grid-column: 1 / -1;
+	width: 380px;
+	min-height: 80px;
+	margin: 5px auto;
+	background-color: #708c5f;
+    -moz-box-shadow:    inset 0 0 10px #000000;
+    -webkit-box-shadow: inset 0 0 10px #000000;
+ 	box-shadow:         inset 0 0 10px #000000;
+ 	 
+}
+.calculator-display:before {
+	height:80px;
+}
+.result-wrapper  {
+	width:100%;;
+	height: 100%;
+	position: relative;s
+	
+}
+.result  {
+	float:right;
+	clear: both;
+	opacity: 0.8;
+	margin: 20px 5px 0  0;
+
+
+}
+.currentOperation {
+	float: right;
+	padding:1px;
+	font-size: 0.8em;
+	opacity: 0.5;
+	margin: 0 5px 0 0;
+	clear:both;
+	overflow: visible;
 }
 .button {
 	background-color: #4f4f4f;
@@ -56,12 +95,15 @@ body{
 	margin: 10px;
 	padding:1px;
 	border-radius: 5px;
-	box-shadow: -3px 3px #888888;
+	box-shadow: -4px 4px #888888;
+	 user-select: none;
+	 text-align: center
 }
 .button:hover {
 	background-color: #404040;
 	cursor: pointer;
+	box-shadow: -3px 3px #888888;
 }
-.deleteAll {
+.double-button {
 	width: 176px;
 }
