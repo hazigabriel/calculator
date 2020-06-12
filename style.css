@@ -71,20 +71,30 @@ body{
 	
 }
 .result  {
-	float:right;
-	clear: both;
+	text-align: right;
+ 	display: inline-block;
 	opacity: 0.8;
-	margin: 20px 5px 0  0;
-
-
+	margin: 20px 0 0  0;
+	width: 95%
 }
-.currentOperation {
+.currentOperatorDisplayed {
+	float:right;
+	text-align: left;
+	opacity: 0.8;
+	display:  inline-block;
+	margin: 20px 0 0  0;
+	width: 5%;
+}
+.currentOperationValue {
 	float: right;
 	padding:1px;
 	font-size: 0.8em;
 	opacity: 0.5;
 	margin: 0 5px 0 0;
 	clear:both;
+	width:100%;
+	text-align: right;
+	display: inline-block;
 	overflow: visible;
 }
 .button {
