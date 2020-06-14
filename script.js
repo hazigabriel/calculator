@@ -5,12 +5,12 @@ let resultValue = document.querySelector(".result");
 let currentOperationValue = document.querySelector(".currentOperationValue");
 let currentOperatorDisplayed = document.querySelector(".currentOperatorDisplayed");
 
-resultValue.innerHTML = ""
 const operate = {
-	add: (a, b)  => Math.round( (a + b) * 100  ) / 100,
+	add: (a, b)  => Math.round( (a + b) * 100  ) / 100, 
 	substract: (a, b) => Math.round( (a - b) * 100  ) / 100,
 	multiply: (a,b) => Math.round( (a * b) * 100  ) / 100,
-	divide: (a,b) => Math.round( (a / b) * 100  ) / 100,
+	divide: (a,b) => Math.round( (a / b) * 100  ) / 100, // by running this ecuation on our function
+													    // the number returned has max of 2 decimals
 }
 const calculator = {
 	allClear: function(){
@@ -29,18 +29,32 @@ const calculator = {
 
 	} ,
 	appendNumber: function(number){
- 
-		if( currentOperationValue.innerHTML ==  "" && number == ".") {
-			currentOperationValue.innerHTML = "0."
+		// the following code handles where should the number and dot be assigned
+        if(currentOperationValue.innerHTML == "" ){
+        	if( resultValue.innerHTML ==  "" && number == ".") {
+			resultValue.innerHTML = "0."
 			
-		} else if(number == "." && currentOperationValue.innerHTML.includes(".")) {
-			return //detects if there is a dot within the current number, and stops the function
-		} else if(currentOperatorDisplayed.innerHTML == "") {
-			resultValue.innerHTML += number
-		} else { 
-			currentOperationValue.innerHTML += number;
-		}
-		
+			} else if(number == "." && resultValue.innerHTML.includes(".") ) {
+				return //detects if there is a dot within the current number, and stops the function
+			} else if(currentOperatorDisplayed.innerHTML == "") {
+				resultValue.innerHTML += number
+			} else { 
+				currentOperationValue.innerHTML += number;
+			}
+        } else {
+
+        	if( number == "." && currentOperationValue.innerHTML ==  "" ) {
+				currentOperationValue.innerHTML = "0."
+			
+			} else if(number == "." && currentOperationValue.innerHTML.includes(".") ) {
+				return //detects if there is a dot within the current number, and stops the function
+			} else if(currentOperatorDisplayed.innerHTML == "") {
+				resultValue.innerHTML += number
+			} else { 
+				currentOperationValue.innerHTML += number;
+			}
+
+        }
 	} ,
 
  
@@ -54,6 +68,7 @@ removalButtons.forEach(function(e){
 		}
 	})
 })
+
 digits.forEach(function(digit){
 	digit.addEventListener("click", function(){
 
@@ -61,6 +76,7 @@ digits.forEach(function(digit){
 
  	})
 });
+
 operators.forEach(function(currentOp){
 	currentOp.addEventListener("click", function(){
 
@@ -70,7 +86,6 @@ operators.forEach(function(currentOp){
 			case "/": 
 				if(currentOperationValue.innerHTML !== ""){
 					resultValue.innerHTML = operate.divide(resultValue.innerHTML, currentOperationValue.innerHTML);
-					currentOperatorDisplayed.innerHTML = chosenOperator;
 					currentOperationValue.innerHTML = ""
 					
 				} else {
@@ -79,8 +94,7 @@ operators.forEach(function(currentOp){
 				break;
 			case "x":
 				if(currentOperationValue.innerHTML !== ""){
-					resultValue.innerHTML = operate.multiply(resultValue.innerHTML, currentOperationValue.innerHTML);
-					currentOperatorDisplayed.innerHTML = chosenOperator;
+					resultValue.innerHTML = operate.multiply(resultValue.innerHTML, currentOperationValue.innerHTML); 
 					currentOperationValue.innerHTML = ""
 				} else {
 					currentOperatorDisplayed.innerHTML = chosenOperator
@@ -88,8 +102,7 @@ operators.forEach(function(currentOp){
 				break;
 			case "+":
 				if(currentOperationValue.innerHTML !== ""){
-					resultValue.innerHTML = operate.add(parseInt(resultValue.innerHTML), parseInt(currentOperationValue.innerHTML));
-					currentOperatorDisplayed.innerHTML = chosenOperator
+					resultValue.innerHTML = operate.add(parseInt(resultValue.innerHTML), parseInt(currentOperationValue.innerHTML)); 
 					currentOperationValue.innerHTML = "";
 				} else {
 					currentOperatorDisplayed.innerHTML = chosenOperator
@@ -98,12 +111,12 @@ operators.forEach(function(currentOp){
 			case "-":
 				if(currentOperationValue.innerHTML !== ""){
 					resultValue.innerHTML = operate.substract(resultValue.innerHTML, currentOperationValue.innerHTML);
-					currentOperatorDisplayed.innerHTML = chosenOperator;
 					currentOperationValue.innerHTML = ""
 				} else {
 					currentOperatorDisplayed.innerHTML = chosenOperator
 				}
 				break;
+
 			default: 
 				break
 		}
@@ -131,5 +144,3 @@ operators.forEach(function(currentOp){
 })
 
 
-//resultValue.innerText = parseInt(currentOperationValue.innerText) + parseInt(resultValue.innerText) 
-//resultValue.innerText = parseInt(resultValue.innerText) / parseInt(currentOperationValue.innerText)
