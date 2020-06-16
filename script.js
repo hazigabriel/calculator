@@ -23,6 +23,7 @@ const calculator = {
 		currentOperationValue.innerHTML = "";
 		currentOperatorDisplayed.innerHTML = "";
 		shouldWeDel = 1;
+		wasEqualsPressed = 0;
 	} , 
 	backspace: function(){
 		if(currentOperationValue.innerHTML == "")  {
