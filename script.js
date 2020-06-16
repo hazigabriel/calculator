@@ -5,6 +5,7 @@ let resultValue = document.querySelector(".result");
 let currentOperationValue = document.querySelector(".currentOperationValue");
 let currentOperatorDisplayed = document.querySelector(".currentOperatorDisplayed");
 let shouldWeDel = 1; //with the backspace function, if we have values assigned to both
+let wasEqualsPressed = 0; //if = was pressed, we should not add any digits to the current/result value, until an operator is selected
 //currentOperation & resultOperation, and we remove all digits from the currentOperation
 //the function starts removing digits from the result value, which should not be modified
 //if it's the result of an operation. using this toggle, after an operator is assigned to result we are unable to delete digits
@@ -39,28 +40,42 @@ const calculator = {
 	} ,
 	appendNumber: function(number){
 		// the following code handles where should the number and dot be assigned
-      		if(number == ".") {
 
-      			if( resultValue.innerHTML ==  "" ) {
-      				if(resultValue.innerHTML.includes(".")) {
-      					return
-      				} else {
-      					resultValue.innerHTML = "0."
-      				}
-					
-				} else  {
-					if(currentOperationValue.innerHTML == "") {
-						currentOperationValue.innerHTML = "0."
-					} else if (currentOperationValue.innerHTML.includes(".")) {
-						return 
-					} else{
-						currentOperationValue.innerHTML = "0."
-					}
-					
-				}
+//the following two function handle if the dot should be assigned 
+//to any of the two displayed values
+      	function assignDotToResultVal(){
+      		if( resultValue.innerHTML.includes(".") ) {
+      			return
+      		} else {
+      			resultValue.innerHTML += number;
+      		}
+      	}	
+
+      	function assignDotToCurrentVal(){
+      		if( currentOperationValue.innerHTML.includes(".") ) {
+      			return
+      		} else {
+      			currentOperationValue.innerHTML += number;
+      		}
+      	}
+ 			//if = was pressed, we should not add any digits to the current/result value, until an operator is selected
+ 			//the next "if" verify if equals was pressed(1 = true) and if so, stops the appendNumber function
+ 			if(wasEqualsPressed == 1 ) {  
+ 				return
+ 			} else if(number == ".") {
+
+      			if(resultValue.innerHTML == ""){
+      				resultValue.innerHTML = "0."
+      			} else if(resultValue.innerHTML != "" && currentOperatorDisplayed.innerHTML == "" ){
+      				assignDotToResultVal()
+      			} else if(currentOperationValue.innerHTML == "" && currentOperatorDisplayed.innerHTML != "") {
+      				currentOperationValue.innerHTML = "0."
+      			} else {
+      				assignDotToCurrentVal()
+      			};
 
       		} else {
-
+      		
 	        	if(currentOperatorDisplayed.innerHTML == "") {
 					resultValue.innerHTML += number
 				} else { 
@@ -98,12 +113,19 @@ operators.forEach(function(currentOp){
 
 		
 		let chosenOperator = currentOp.querySelector("p").innerHTML;
-		if(resultValue.innerHTML !=- "") {  //if we do not have any value inputed, we cannot assign and display an operator
+		if(resultValue.innerHTML != "") {  //if we do not have any value inputed, we cannot assign and display an operator
 			switch(currentOperatorDisplayed.innerHTML) {
 				case "/": 
 					if(currentOperationValue.innerHTML !== ""){
-						resultValue.innerHTML = operate.divide(resultValue.innerHTML, currentOperationValue.innerHTML);
-						currentOperationValue.innerHTML = ""
+						if(currentOperationValue.innerHTML == "0") {
+							alert("The calculator broke after trying to divide with 0, we must reload the page :(");
+							calculator.allClear();
+							wasEqualsPressed = 1;
+							currentOperatorDisplayed = "";
+						} else {
+							resultValue.innerHTML = operate.divide(parseFloat(resultValue.innerHTML), parseFloat(currentOperationValue.innerHTML));
+							currentOperationValue.innerHTML = ""
+						}
 						
 					} else {
 						currentOperatorDisplayed.innerHTML = chosenOperator
@@ -111,7 +133,7 @@ operators.forEach(function(currentOp){
 					break;
 				case "x":
 					if(currentOperationValue.innerHTML !== ""){
-						resultValue.innerHTML = operate.multiply(resultValue.innerHTML, currentOperationValue.innerHTML); 
+						resultValue.innerHTML = operate.multiply(parseFloat(resultValue.innerHTML), parseFloat(currentOperationValue.innerHTML)); 
 						currentOperationValue.innerHTML = ""
 					} else {
 						currentOperatorDisplayed.innerHTML = chosenOperator
@@ -119,7 +141,7 @@ operators.forEach(function(currentOp){
 					break;
 				case "+":
 					if(currentOperationValue.innerHTML !== ""){
-						resultValue.innerHTML = operate.add(parseInt(resultValue.innerHTML), parseInt(currentOperationValue.innerHTML)); 
+						resultValue.innerHTML = operate.add(parseFloat(resultValue.innerHTML), parseFloat(currentOperationValue.innerHTML)); 
 						currentOperationValue.innerHTML = "";
 					} else {
 						currentOperatorDisplayed.innerHTML = chosenOperator
@@ -127,7 +149,7 @@ operators.forEach(function(currentOp){
 					break;
 				case "-":
 					if(currentOperationValue.innerHTML !== ""){
-						resultValue.innerHTML = operate.substract(resultValue.innerHTML, currentOperationValue.innerHTML);
+						resultValue.innerHTML = operate.substract(parseFloat(resultValue.innerHTML), parseFloat(currentOperationValue.innerHTML));
 						currentOperationValue.innerHTML = ""
 					} else {
 						currentOperatorDisplayed.innerHTML = chosenOperator
@@ -140,22 +162,28 @@ operators.forEach(function(currentOp){
 			switch(chosenOperator) {
 				case "/": 
 					shouldWeDel = 0;
+					wasEqualsPressed = 0;
 					currentOperatorDisplayed.innerHTML = chosenOperator;
 					break;
 				case "x":
 					shouldWeDel = 0;
+					wasEqualsPressed = 0;
 					currentOperatorDisplayed.innerHTML = chosenOperator;
 					break;
 				case "+":
 					shouldWeDel = 0;
+					wasEqualsPressed = 0;
 					currentOperatorDisplayed.innerHTML = chosenOperator;
 					break;
 				case "-":
 					shouldWeDel = 0;
+					wasEqualsPressed = 0;
 					currentOperatorDisplayed.innerHTML = chosenOperator;
 					break;
 				case "=":
-					currentOperatorDisplayed.innerHTML = ""
+					wasEqualsPressed = 1;
+					currentOperatorDisplayed.innerHTML = "";
+					break;
 				default: 
 					break
 			}
@@ -165,8 +193,9 @@ operators.forEach(function(currentOp){
 	})
 })
 ///bugs to fix:
-// when trying to add a dot to our top value, if a current value is not assigned
-// upon pressing dot, a new value of "0." is generated for the current value,
-// but we are not having a . value assigned for the resultValue/top value
+// 
+// 
+// 
 //
- 
+//if we execute an operation trigger by "=", and we do not selct an operator
+//any digit would be assigned to the result value
