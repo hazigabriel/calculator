@@ -10,7 +10,7 @@ let shouldWeDel = 1; //with the backspace function, if we have values assigned t
 //if it's the result of an operation. using this toggle, after an operator is assigned to result we are unable to delete digits
 
 const operate = {
-	add: (a, b)  => Math.round( (a + b) * 100  ) / 100 , 
+	add: (a, b)  => Math.round( (a + b) * 100  ) / 100, 
 	substract: (a, b) => Math.round( (a - b) * 100  ) / 100,
 	multiply: (a,b) => Math.round( (a * b) * 100  ) / 100,
 	divide: (a,b) => Math.round( (a / b) * 100  ) / 100, // by running this ecuation on our function
@@ -39,32 +39,38 @@ const calculator = {
 	} ,
 	appendNumber: function(number){
 		// the following code handles where should the number and dot be assigned
-        if(currentOperationValue.innerHTML == "" ){
+      		if(number == ".") {
 
-        	if( resultValue.innerHTML ==  "" && number == ".") {
-				resultValue.innerHTML = "0."
-			
-			} else if(number == "." && resultValue.innerHTML.includes(".") ) {
-				return //detects if there is a dot within the current number, and stops the function
-			} else if(currentOperatorDisplayed.innerHTML == "") {
-				resultValue.innerHTML += number
-			} else { 
-				currentOperationValue.innerHTML += number;
-			}
-        } else {
-        	if( number == "." && currentOperationValue.innerHTML ==  "" ) {
-				currentOperationValue.innerHTML = "0."
-			
-			} else if(number == "." && currentOperationValue.innerHTML.includes(".") ) {
-				return //detects if there is a dot within the current number, and stops the function
-			} else if(currentOperatorDisplayed.innerHTML == "") {
-				resultValue.innerHTML += number
-			} else { 
-				currentOperationValue.innerHTML += number;
-			}
+      			if( resultValue.innerHTML ==  "" ) {
+      				if(resultValue.innerHTML.includes(".")) {
+      					return
+      				} else {
+      					resultValue.innerHTML = "0."
+      				}
+					
+				} else  {
+					if(currentOperationValue.innerHTML == "") {
+						currentOperationValue.innerHTML = "0."
+					} else if (currentOperationValue.innerHTML.includes(".")) {
+						return 
+					} else{
+						currentOperationValue.innerHTML = "0."
+					}
+					
+				}
 
-        }
-	} ,
+      		} else {
+
+	        	if(currentOperatorDisplayed.innerHTML == "") {
+					resultValue.innerHTML += number
+				} else { 
+					currentOperationValue.innerHTML += number;
+				}
+      		}
+
+
+
+    }
 
  
 }
@@ -159,8 +165,8 @@ operators.forEach(function(currentOp){
 	})
 })
 ///bugs to fix:
-// when pressing DOt, if we do not have any value assigned to currentOperationValue we should start the line with "0.", instead of just "."
-//
-//
+// when trying to add a dot to our top value, if a current value is not assigned
+// upon pressing dot, a new value of "0." is generated for the current value,
+// but we are not having a . value assigned for the resultValue/top value
 //
  
